@@ -1,17 +1,29 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
+  <div class="home-page">
+    <div class="banner">
+      <div class="container">
+        <h1 class="logo-font">conduit</h1>
+        <p>A place to share your knowledge.</p>
+      </div>
+    </div>
+    <div class="container page">
+      <div class="row">
+        <div class="col-md-9"><Feed /></div>
+        <div class="col-md-3"><FeedSidebar /></div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component';
-import HelloWorld from '@/components/HelloWorld.vue'; // @ is an alias to /src
+import { Options, Vue } from "vue-class-component";
+import Feed from "@/components/feed/Feed.vue";
+import FeedSidebar from "@/components/feed/FeedSidebar.vue";
 
 @Options({
   components: {
-    HelloWorld,
+    Feed,
+    FeedSidebar,
   },
 })
 export default class Home extends Vue {}
