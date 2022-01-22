@@ -6,10 +6,35 @@
         <ul class="nav navbar-nav pull-xs-right">
           <!-- TODO: login user -->
           <li class="nav-item"><router-link class="nav-link" to="/">Home</router-link></li>
-          <li class="nav-item"><router-link class="nav-link" to="/login">Sign in</router-link></li>
-          <li class="nav-item">
-            <router-link class="nav-link" to="/register">Sign up </router-link>
-          </li>
+          <template v-if="!isLogin">
+            <li class="nav-item">
+              <router-link class="nav-link" to="/login">Sign in</router-link>
+            </li>
+            <li class="nav-item">
+              <router-link class="nav-link" to="/register">Sign up </router-link>
+            </li>
+          </template>
+          <template v-else>
+            <li class="nav-item">
+              <router-link class="nav-link" to="/editor"
+                ><i class="ion-compose"></i>&nbsp;New Article</router-link
+              >
+            </li>
+            <li class="nav-item">
+              <router-link class="nav-link" to="/settings"
+                ><i class="ion-gear-a"></i> Settings</router-link
+              >
+            </li>
+            <li class="nav-item">
+              <router-link class="nav-link" to="/profile">
+                <img
+                  class="user-pic"
+                  :src="userimage || 'https://api.realworld.io/images/smiley-cyrus.jpeg'"
+                />
+                {{ username }}</router-link
+              >
+            </li>
+          </template>
         </ul>
       </div>
     </nav>
@@ -26,8 +51,16 @@
   </div>
 </template>
 <script lang="ts">
-import { Options, Vue } from "vue-class-component";
+import { defineComponent, computed } from "vue";
+import { useStore } from "@/store";
 
-export default class App extends Vue {}
+export default defineComponent({
+  setup() {
+    const store = useStore();
+    const isLogin = computed(() => store.getters["user/isLogin"]);
+    const username = computed(() => store.state.user.userInfo.name);
+    const userimage = computed(() => store.state.user.userInfo.image);
+    return { isLogin, username, userimage };
+  },
+});
 </script>
-<style lang="scss"></style>
