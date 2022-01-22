@@ -7,33 +7,10 @@
           <p class="text-xs-center">
             <router-link to="/register">Need an account?</router-link>
           </p>
-          <ul class="error-messages">
-            <!-- TODO: form error-->
+          <ul v-if="hasError" class="error-messages">
+            <li v-for="message in messages" :key="message">{{ message }}</li>
           </ul>
-          <form novalidate="" class="ng-untouched ng-pristine ng-invalid">
-            <fieldset>
-              <fieldset class="form-group"><!----></fieldset>
-              <fieldset class="form-group">
-                <input
-                  formcontrolname="email"
-                  placeholder="Email"
-                  type="text"
-                  class="form-control form-control-lg ng-untouched ng-pristine ng-invalid"
-                />
-              </fieldset>
-              <fieldset class="form-group">
-                <input
-                  formcontrolname="password"
-                  placeholder="Password"
-                  type="password"
-                  class="form-control form-control-lg ng-untouched ng-pristine ng-invalid"
-                />
-              </fieldset>
-              <button type="submit" class="btn btn-lg btn-primary pull-xs-right" disabled="">
-                Sign in
-              </button>
-            </fieldset>
-          </form>
+          <LoginForm />
         </div>
       </div>
     </div>
@@ -41,9 +18,26 @@
 </template>
 
 <script lang="ts">
-import { Vue } from "vue-class-component";
+import { defineComponent, computed } from "vue";
+import { useStore } from "@/store";
+import LoginForm from "@/components/auth/LoginForm.vue";
 
-export default class Login extends Vue {}
+export default defineComponent({
+  name: "Login",
+  components: {
+    LoginForm,
+  },
+  setup() {
+    const store = useStore();
+    store.commit("common/setDefaultState", { root: true });
+
+    const hasError = computed(() => store.state.common.hasError);
+    const messages = computed(() => store.state.common.messages);
+
+    return {
+      hasError,
+      messages,
+    };
+  },
+});
 </script>
-
-<style></style>

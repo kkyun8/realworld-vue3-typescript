@@ -9,11 +9,13 @@ export interface ILogin {
   password: string;
 }
 
-export interface IUserInfo {
+export interface IUser {
   id: number;
   email: string;
   name: string;
   image: null | string;
   title: null | string;
   description: null | string;
+  feedIds?: number[];
+  favoriteFeedIds?: number[];
 }

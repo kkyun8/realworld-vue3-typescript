@@ -1,4 +1,4 @@
-import { IRegister, IUserInfo } from "@/types/user";
+import { ILogin, IRegister, IUser } from "@/types/user";
 
 export interface RootState {
   common: ICommonState;
@@ -13,5 +13,6 @@ export interface ICommonState {
 
 export interface IUserState {
   register: IRegister;
-  userInfo: IUserInfo;
+  login: ILogin;
+  loginUser: IUser;
 }

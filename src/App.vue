@@ -4,7 +4,9 @@
       <div class="container">
         <router-link class="navbar-brand" to="/">conduit</router-link>
         <ul class="nav navbar-nav pull-xs-right">
-          <!-- TODO: login user -->
+          <li v-if="isLogin" class="nav-item">
+            <a @click.prevent="logout" class="nav-link">Logout</a>
+          </li>
           <li class="nav-item"><router-link class="nav-link" to="/">Home</router-link></li>
           <template v-if="!isLogin">
             <li class="nav-item">
@@ -17,7 +19,7 @@
           <template v-else>
             <li class="nav-item">
               <router-link class="nav-link" to="/editor"
-                ><i class="ion-compose"></i>&nbsp;New Article</router-link
+                ><i class="ion-compose"></i> New Article</router-link
               >
             </li>
             <li class="nav-item">
@@ -57,10 +59,23 @@ import { useStore } from "@/store";
 export default defineComponent({
   setup() {
     const store = useStore();
+    const loginUser = localStorage.getItem("userLoginInfo");
+    if (loginUser) {
+      const { email, password } = JSON.parse(loginUser);
+      store.commit("user/setLogin", { email, password });
+
+      const call = async () => await store.dispatch("user/login");
+      call();
+    }
+
+    function logout() {
+      store.dispatch("user/logout");
+    }
+
     const isLogin = computed(() => store.getters["user/isLogin"]);
-    const username = computed(() => store.state.user.userInfo.name);
-    const userimage = computed(() => store.state.user.userInfo.image);
-    return { isLogin, username, userimage };
+    const username = computed(() => store.state.user.loginUser.name);
+    const userimage = computed(() => store.state.user.loginUser.image);
+    return { isLogin, username, userimage, logout };
   },
 });
 </script>

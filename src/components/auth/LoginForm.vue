@@ -3,16 +3,6 @@
     <fieldset>
       <fieldset class="form-group">
         <input
-          placeholder="Username"
-          type="text"
-          v-model="input.name"
-          class="form-control form-control-lg"
-          required
-          :disabled="isLoading"
-        />
-      </fieldset>
-      <fieldset class="form-group">
-        <input
           placeholder="Email"
           type="text"
           v-model="input.email"
@@ -37,7 +27,7 @@
         :disabled="submitDisabled"
         class="btn btn-lg btn-primary pull-xs-right"
       >
-        Sign up
+        Sign in
       </button>
     </fieldset>
   </form>
@@ -46,26 +36,25 @@
 <script lang="ts">
 import { defineComponent, computed, reactive } from "vue";
 import { useStore } from "@/store";
-import { IRegister } from "@/types/user";
+import { ILogin } from "@/types/user";
 
 export default defineComponent({
-  name: "RegisterForm",
+  name: "LoginForm",
   setup() {
     const store = useStore();
 
-    const input = reactive<IRegister>({
-      name: "",
+    const input = reactive<ILogin>({
       email: "",
       password: "",
     });
 
-    const submitDisabled = computed(() => !input.name || !input.email || !input.password);
+    const submitDisabled = computed(() => !input.email || !input.password);
     const isLoading = computed(() => store.state.common.isLoading);
 
     async function submit() {
-      const { name, email, password } = input;
-      store.commit("user/setRegister", { name, email, password });
-      await store.dispatch("user/register");
+      const { email, password } = input;
+      store.commit("user/setLogin", { email, password });
+      await store.dispatch("user/login");
     }
 
     return {
