@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import Home from "../views/Home.vue";
+import { store } from "@/store";
 
 // TODO: url param & etc
 const routes: Array<RouteRecordRaw> = [
@@ -12,11 +13,19 @@ const routes: Array<RouteRecordRaw> = [
     path: "/login",
     name: "Login",
     component: () => import(/* webpackChunkName: "login" */ "../views/Login.vue"),
+    beforeEnter: (to, from, next) => {
+      if (store.getters["user/isLogin"]) next({ name: "Home" });
+      else next();
+    },
   },
   {
     path: "/register",
     name: "Register",
     component: () => import(/* webpackChunkName: "register" */ "../views/Register.vue"),
+    beforeEnter: (to, from, next) => {
+      if (store.getters["user/isLogin"]) next({ name: "Home" });
+      else next();
+    },
   },
   {
     path: "/profile",

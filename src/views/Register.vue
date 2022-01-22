@@ -7,40 +7,10 @@
           <p class="text-xs-center">
             <router-link to="/login">Have an account?</router-link>
           </p>
-          <ul class="error-messages">
-            <!-- TODO: form error-->
+          <ul v-if="hasError" class="error-messages">
+            <li v-for="message in messages" :key="message">{{ message }}</li>
           </ul>
-          <form novalidate="" class="ng-untouched ng-pristine ng-invalid">
-            <fieldset>
-              <fieldset class="form-group">
-                <input
-                  formcontrolname="username"
-                  placeholder="Username"
-                  type="text"
-                  class="form-control form-control-lg ng-untouched ng-pristine ng-valid"
-                /><!---->
-              </fieldset>
-              <fieldset class="form-group">
-                <input
-                  formcontrolname="email"
-                  placeholder="Email"
-                  type="text"
-                  class="form-control form-control-lg ng-untouched ng-pristine ng-invalid"
-                />
-              </fieldset>
-              <fieldset class="form-group">
-                <input
-                  formcontrolname="password"
-                  placeholder="Password"
-                  type="password"
-                  class="form-control form-control-lg ng-untouched ng-pristine ng-invalid"
-                />
-              </fieldset>
-              <button type="submit" class="btn btn-lg btn-primary pull-xs-right" disabled="">
-                Sign up
-              </button>
-            </fieldset>
-          </form>
+          <RegisterForm />
         </div>
       </div>
     </div>
@@ -48,9 +18,26 @@
 </template>
 
 <script lang="ts">
-import { Vue } from "vue-class-component";
+import { defineComponent, computed } from "vue";
+import { useStore } from "@/store";
+import RegisterForm from "@/components/auth/RegisterForm.vue";
 
-export default class Register extends Vue {}
+export default defineComponent({
+  name: "Register",
+  components: {
+    RegisterForm,
+  },
+  setup() {
+    const store = useStore();
+    store.commit("common/setDefaultState", { root: true });
+
+    const hasError = computed(() => store.state.common.hasError);
+    const messages = computed(() => store.state.common.messages);
+
+    return {
+      hasError,
+      messages,
+    };
+  },
+});
 </script>
-
-<style></style>
