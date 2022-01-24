@@ -1,20 +1,45 @@
 <template>
   <div class="sidebar">
     <p>Popular Tags</p>
-    <div class="tag-list">
-      <!-- TODO: v-for tags-->
-      <a class="tag-default tag-pill"> implementations </a
-      ><a class="tag-default tag-pill"> codebaseShow </a
-      ><a class="tag-default tag-pill"> welcome </a
-      ><a class="tag-default tag-pill"> introduction </a>
+    <div v-if="isLoading">Loading tags...</div>
+    <div v-if="isEmpty">No tags are here... yet.</div>
+    <div v-else class="tag-list">
+      <a
+        v-for="tag in tagList"
+        :key="`sidebar-tag${tag.id}`"
+        class="tag-default tag-pill"
+        @click.prevent="callArticleList(tag.id)"
+      >
+        {{ tag.name }}
+      </a>
     </div>
-    <div hidden="">Loading tags...</div>
-    <div hidden="">No tags are here... yet.</div>
   </div>
 </template>
 
 <script lang="ts">
-import { Vue } from "vue-class-component";
+import { defineComponent, onMounted, computed } from "vue";
+import { useStore } from "@/store";
 
-export default class FeedSidebar extends Vue {}
+export default defineComponent({
+  name: "FeedSidebar",
+  setup() {
+    const store = useStore();
+    const isLoading = computed(() => store.state.common.isLoading);
+    const tagList = computed(() => store.state.tag.tagList);
+    const isEmpty = computed(() => store.state.tag.tagList.length === 0);
+
+    onMounted(async () => {
+      await store.dispatch("tag/getTagList");
+    });
+
+    async function callArticleList(tagId: number) {
+      store.commit("feed/setFeedParamsPage", 1);
+      store.commit("feed/setFeedParamsUserId", 0);
+      store.commit("feed/setFeedParamsTagId", tagId);
+      await store.dispatch("feed/getArticleList");
+    }
+
+    return { isLoading, tagList, isEmpty, callArticleList };
+  },
+});
 </script>

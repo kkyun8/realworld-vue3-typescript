@@ -2,6 +2,7 @@ import { InjectionKey } from "vue";
 import { createStore, Store, useStore as baseUseStore } from "vuex";
 import common from "./common";
 import user from "./user";
+import feed from "./feed";
 
 import { RootState } from "../types/index";
 
@@ -11,6 +12,7 @@ export const store = createStore<RootState>({
   modules: {
     common,
     user,
+    feed,
   },
 });
 

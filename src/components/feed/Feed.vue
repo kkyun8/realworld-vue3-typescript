@@ -1,32 +1,29 @@
 <template>
   <div class="feed-toggle">
     <ul class="nav nav-pills outline-active">
-      <!-- TODO: ログインした場合表示 -->
-      <li class="nav-item" show-authed="true" style="">
-        <a
-          href=""
+      <li v-if="isLogin" class="nav-item">
+        <div
           class="nav-link"
-          ng-class="{ active: $ctrl.listConfig.type === 'feed' }"
-          ng-click="$ctrl.changeList({ type: 'feed' })"
+          :class="{ active: feedType === 'user' }"
+          @click.prevent="setArticleType('user')"
         >
           Your Feed
-        </a>
+        </div>
       </li>
 
       <li class="nav-item">
-        <a
-          href=""
+        <div
           class="nav-link"
-          ng-class="{ active: $ctrl.listConfig.type === 'all' &amp;&amp; !$ctrl.listConfig.filters }"
-          ng-click="$ctrl.changeList({ type: 'all' })"
+          :class="{ active: feedType === 'global' }"
+          @click.prevent="setArticleType('global')"
         >
           Global Feed
-        </a>
+        </div>
       </li>
-
-      <!-- TODO: tag活性がした場合表示 -->
-      <li class="nav-item">
-        <a href="" class="nav-link active ng-binding"> <i class="ion-pound"></i> welcome </a>
+      <li v-if="hasTag" class="nav-item">
+        <div class="nav-link" :class="{ active: feedType === 'tag' }">
+          <i class="ion-pound"></i> {{ feedParamsTagName }}
+        </div>
       </li>
     </ul>
   </div>
@@ -34,13 +31,38 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from "vue-class-component";
+import { defineComponent, computed, ref, onMounted } from "vue";
+import { useStore } from "@/store";
 import ArticleList from "@/components/article/ArticleList.vue";
 
-@Options({
+export default defineComponent({
   components: {
     ArticleList,
   },
-})
-export default class Feed extends Vue {}
+  name: "Feed",
+  setup() {
+    const store = useStore();
+    const isLogin = computed(() => store.getters["user/isLogin"]);
+    const hasTag = computed(() => store.state.feed.feedParams.tagId !== 0);
+    const feedType = computed(() => store.getters["feed/feedType"]);
+
+    const feedParamsTagName = computed(() => store.getters["feed/feedParamsTagName"]);
+
+    async function setArticleType(type: string) {
+      store.commit("feed/setFeedParamsPage", 1);
+      store.commit("feed/setFeedParamsUserId", 0);
+      store.commit("feed/setFeedParamsTagId", 0);
+      switch (type) {
+        case "user":
+          store.commit("feed/setFeedParamsUserId", store.state.user.loginUser.id);
+          break;
+        default:
+          break;
+      }
+      await store.dispatch("feed/getArticleList");
+    }
+
+    return { isLogin, setArticleType, hasTag, feedType, feedParamsTagName };
+  },
+});
 </script>
