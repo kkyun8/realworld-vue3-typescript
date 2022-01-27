@@ -1,6 +1,6 @@
 import { IPagination } from "./common";
 import { IUser } from "./user";
-
+import { ITag } from "./tag";
 export interface IArticle {
   title: string;
   body: string;
@@ -11,15 +11,6 @@ export interface IArticle {
   tags?: ITag[];
   user?: IUser;
 }
-
-export interface ITag {
-  id: number;
-  name: string;
-  body: string;
-  createdAt?: string;
-  updatedAt?: string;
-}
-
 export interface IFeedParams extends IPagination {
   tagId?: number;
   userId?: number;

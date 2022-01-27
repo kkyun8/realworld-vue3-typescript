@@ -1,10 +1,12 @@
 import { ILogin, IRegister, IUser } from "@/types/user";
 import { IArticle, IFeedParams } from "./feed";
+import { ITag } from "./tag";
 
 export interface RootState {
   common: ICommonState;
   user: IUserState;
   feed: IFeedState;
+  tag: ITagState;
 }
 
 export interface ICommonState {
@@ -23,4 +25,9 @@ export interface IFeedState {
   article: IArticle;
   articleList: IArticle[];
   feedParams: IFeedParams;
+}
+
+export interface ITagState {
+  tag: ITag;
+  tagList: ITag[];
 }
