@@ -19,6 +19,18 @@ const actions: ActionTree<IFeedState, RootState> = {
 
     return result;
   },
+  async getArticle({ commit, state }: any, value: string): Promise<any> {
+    commit("common/setLoading", true, { root: true });
+
+    const result = await axios
+      .get(`/feed/${value}`)
+      .then((res: any) => {
+        commit("setArticle", res.data);
+      })
+      .finally(() => commit("common/setLoading", false, { root: true }));
+
+    return result;
+  },
 };
 
 export default actions;

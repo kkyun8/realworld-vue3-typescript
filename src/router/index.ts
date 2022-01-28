@@ -28,14 +28,14 @@ const routes: Array<RouteRecordRaw> = [
     },
   },
   {
-    path: "/profile",
+    path: "/profile/:id",
     name: "Profile",
-    component: () => import(/* webpackChunkName: "article-page" */ "../views/Profile.vue"),
+    component: () => import(/* webpackChunkName: "profile" */ "../views/Profile.vue"),
   },
   {
-    path: "/article",
+    path: "/article/:id",
     name: "Article",
-    component: () => import(/* webpackChunkName: "article-page" */ "../views/Article.vue"),
+    component: () => import(/* webpackChunkName: "article" */ "../views/Article.vue"),
   },
   {
     path: "/editor",
