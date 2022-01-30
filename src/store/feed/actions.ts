@@ -11,19 +11,20 @@ const actions: ActionTree<IFeedState, RootState> = {
       .then((res: any) => {
         commit("setArticleList", res.data.data);
 
-        const { limit, page, totalCount, userId, tagId } = res.data;
-        const values = { limit, page, totalCount, userId, tagId };
+        const { limit, page, totalCount, userId, tagId, loginId } = res.data;
+        const values = { limit, page, totalCount, userId, tagId, loginId };
         commit("setFeedParams", values);
       })
       .finally(() => commit("common/setLoading", false, { root: true }));
 
     return result;
   },
-  async getArticle({ commit, state }: any, value: string): Promise<any> {
+  async getArticle({ commit, rootState }: any, value: string): Promise<any> {
     commit("common/setLoading", true, { root: true });
+    const loginId = rootState.user.loginUser.id;
 
     const result = await axios
-      .get(`/feed/${value}`)
+      .get(`/feed/${value}/loginId/${loginId}`)
       .then((res: any) => {
         commit("setArticle", res.data);
       })
