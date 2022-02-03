@@ -16,6 +16,6 @@ export interface IUser {
   image: null | string;
   title: null | string;
   description: null | string;
-  feedIds?: number[];
-  favoriteFeedIds?: number[];
+  isFollower?: boolean;
+  isFollowing?: boolean;
 }

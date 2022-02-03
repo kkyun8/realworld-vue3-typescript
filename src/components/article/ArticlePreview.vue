@@ -1,6 +1,12 @@
 <template>
   <div class="article-preview">
-    <ArticleMeta :user="article.user" :updatedAt="article.updatedAt" />
+    <ArticleMeta
+      :user="article.user"
+      :updatedAt="article.updatedAt"
+      :articleId="article.id"
+      :favoriteCount="article.favoriteCount"
+      :isFavorited="article.isFavorited"
+    />
 
     <router-link :to="`/article/${article.id}`" class="preview-link"
       ><h1>{{ article.title }}</h1>
@@ -9,7 +15,7 @@
       <ul v-if="article.tags" class="tag-list">
         <li
           v-for="tag in article.tags"
-          :key="`ArticlePreviewTag${tag.id}`"
+          :key="`article-preview-tag${tag.id}`"
           class="tag-default tag-pill tag-outline"
           @click.prevent="tagFeed(tag.id)"
         >

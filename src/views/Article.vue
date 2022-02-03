@@ -3,7 +3,13 @@
     <div class="banner">
       <div class="container">
         <h1>{{ article.title }}</h1>
-        <ArticleMeta :user="article.user" :updatedAt="article.updatedAt" :articleId="article.id" />
+        <ArticleMeta
+          :user="article.user"
+          :updatedAt="article.updatedAt"
+          :articleId="article.id"
+          :favoriteCount="article.favoriteCount"
+          :isFavorited="article.isFavorited"
+        />
       </div>
     </div>
     <div class="container page">
@@ -25,7 +31,13 @@
       </div>
       <hr />
       <div class="article-actions">
-        <ArticleMeta :user="article.user" :updatedAt="article.updatedAt" :articleId="article.id" />
+        <ArticleMeta
+          :user="article.user"
+          :updatedAt="article.updatedAt"
+          :articleId="article.id"
+          :favoriteCount="article.favoriteCount"
+          :isFavorited="article.isFavorited"
+        />
       </div>
       <div class="row">
         <div class="col-xs-12 col-md-8 offset-md-2">
