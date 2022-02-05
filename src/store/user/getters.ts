@@ -3,7 +3,7 @@ import { IUserState, RootState } from "@/types";
 
 const getters: GetterTree<IUserState, RootState> = {
   isLogin: (state: IUserState) => {
-    return state.loginUser.id !== 0;
+    return state.loginUser.name != "";
   },
 };
 

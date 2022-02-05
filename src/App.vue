@@ -59,12 +59,16 @@ import { useStore } from "@/store";
 export default defineComponent({
   setup() {
     const store = useStore();
-    const loginUser = localStorage.getItem("userLoginInfo");
-    if (loginUser) {
-      const { email, password } = JSON.parse(loginUser);
-      store.commit("user/setLogin", { email, password });
 
-      const call = async () => await store.dispatch("user/login");
+    const call = async () => {
+      await store.dispatch("user/token");
+    };
+
+    const isLogin = computed(() => store.getters["user/isLogin"]);
+    const username = computed(() => store.state.user.loginUser.name);
+    const userimage = computed(() => store.state.user.loginUser.image);
+
+    if (!isLogin.value) {
       call();
     }
 
@@ -72,9 +76,6 @@ export default defineComponent({
       store.dispatch("user/logout");
     }
 
-    const isLogin = computed(() => store.getters["user/isLogin"]);
-    const username = computed(() => store.state.user.loginUser.name);
-    const userimage = computed(() => store.state.user.loginUser.image);
     return { isLogin, username, userimage, logout };
   },
 });
