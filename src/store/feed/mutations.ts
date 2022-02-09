@@ -1,6 +1,6 @@
 import { MutationTree } from "vuex";
 import { IFeedState } from "@/types";
-import { IArticle, IFeedParams } from "@/types/feed";
+import { IArticle, IComment, IFeedParams } from "@/types/feed";
 import { IUser } from "@/types/user";
 
 const mutations: MutationTree<IFeedState> = {
@@ -16,6 +16,9 @@ const mutations: MutationTree<IFeedState> = {
   setFeedParams(state: IFeedState, value: IFeedParams): void {
     state.feedParams = value;
   },
+  setComment(state: IFeedState, value: IComment): void {
+    state.comment = value;
+  },
   setFeedParamsPage(state: IFeedState, value: number): void {
     state.feedParams.page = value;
   },
@@ -24,9 +27,6 @@ const mutations: MutationTree<IFeedState> = {
   },
   setFeedParamsTagId(state: IFeedState, value: number): void {
     state.feedParams.tagId = value;
-  },
-  setFeedParamsLoginId(state: IFeedState, value: number): void {
-    state.feedParams.loginId = value;
   },
   setArticleInArticleList(state: IFeedState, value: IArticle): void {
     state.articleList = state.articleList.map((a) => {

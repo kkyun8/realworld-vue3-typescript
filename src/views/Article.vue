@@ -46,7 +46,7 @@
             <router-link to="/register">sign up</router-link> to add comments on this article.
           </div>
           <!-- TODO: loginの場合-->
-          <CommentEditor v-if="isLogin" />
+          <CommentEditor v-if="isLogin" :articleId="article.id" />
 
           <Comment v-for="c in article.comment" :key="`article-comment${c.id}`" :comment="c" />
         </div>
