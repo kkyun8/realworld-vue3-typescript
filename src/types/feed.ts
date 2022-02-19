@@ -12,10 +12,9 @@ export interface IArticle {
   updatedAt?: string;
   tags?: ITag[];
   user?: IUser;
-  comment?: Comment[];
+  comment?: IComment[];
 }
 export interface IFeedParams extends IPagination {
   tagId?: number;
   userId?: number;
-  loginId?: number;
 }

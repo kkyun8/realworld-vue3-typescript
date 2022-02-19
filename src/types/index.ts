@@ -1,5 +1,5 @@
 import { ILogin, IRegister, IUser } from "@/types/user";
-import { IArticle, IFeedParams } from "./feed";
+import { IArticle, IFeedParams, IComment } from "./feed";
 import { ITag } from "./tag";
 
 export interface RootState {
@@ -24,6 +24,7 @@ export interface IUserState {
 export interface IFeedState {
   article: IArticle;
   articleList: IArticle[];
+  comment: IComment;
   feedParams: IFeedParams;
 }
 
