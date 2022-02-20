@@ -1,34 +1,23 @@
 # realworld-vue3-typescript
 
-## Project setup
-```
-npm install
-```
+下記のRealworldプロジェクトのvue3-typescriptバージョン。
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+https://github.com/gothinkster/realworld
 
-### Compiles and minifies for production
-```
-npm run build
-```
+バックエンドは以前勉強会用の自分が担当したNestJSを使用。
 
-### Run your unit tests
-```
-npm run test:unit
-```
+https://github.com/kkyun8/gnkr-side-project
 
-### Run your end-to-end tests
-```
-npm run test:e2e
-```
 
-### Lints and fixes files
-```
-npm run lint
-```
+## Setting
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+* VueCliで初期設定
+  * Nuxtを使う方法もあったか、Cliで十分な気がした。 
+* composition-api
+  * Vue2よりコード量が減った。  
+* typescript object style
+  * vue2の場合class styleをメインにしたがobject styleがコード量が減ると思ってこれにした
+* github project
+  * 一人で作ったけど、issueを作成したり、コミットにissue付けったりした。
+  * 自分が行った作業についてメモみたいにissueが付けられてよかった。
+
