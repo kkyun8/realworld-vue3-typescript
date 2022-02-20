@@ -38,8 +38,8 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import(/* webpackChunkName: "article" */ "../views/Article.vue"),
   },
   {
-    path: "/editor",
-    name: "Editpr",
+    path: "/editor/:id",
+    name: "Editor",
     component: () => import(/* webpackChunkName: "register" */ "../views/ArticleEditor.vue"),
   },
   {

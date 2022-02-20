@@ -2,72 +2,31 @@
   <div class="container page">
     <div class="row">
       <div class="col-md-10 offset-md-1 col-xs-12">
-        <list-errors errors="$ctrl.errors" class="ng-isolate-scope"
-          ><ul class="error-messages ng-hide" ng-show="$ctrl.errors">
-            <!-- ngRepeat: (field, errors) in $ctrl.errors -->
-          </ul>
-        </list-errors>
-
-        <form class="ng-pristine ng-valid">
-          <fieldset ng-disabled="$ctrl.isSubmitting">
-            <fieldset class="form-group">
-              <input
-                class="form-control form-control-lg ng-pristine ng-untouched ng-valid ng-empty"
-                ng-model="$ctrl.article.title"
-                type="text"
-                placeholder="Article Title"
-              />
-            </fieldset>
-
-            <fieldset class="form-group">
-              <input
-                class="form-control ng-pristine ng-untouched ng-valid ng-empty"
-                ng-model="$ctrl.article.description"
-                type="text"
-                placeholder="What's this article about?"
-              />
-            </fieldset>
-
-            <fieldset class="form-group">
-              <textarea
-                class="form-control ng-pristine ng-untouched ng-valid ng-empty"
-                rows="8"
-                ng-model="$ctrl.article.body"
-                placeholder="Write your article (in markdown)"
-              >
-              </textarea>
-            </fieldset>
-
-            <fieldset class="form-group">
-              <input
-                class="form-control ng-pristine ng-untouched ng-valid ng-empty"
-                type="text"
-                placeholder="Enter tags"
-                ng-model="$ctrl.tagField"
-                ng-keyup="$event.keyCode == 13 &amp;&amp; $ctrl.addTag()"
-              />
-
-              <div class="tag-list">
-                <!-- ngRepeat: tag in $ctrl.article.tagList -->
-              </div>
-            </fieldset>
-
-            <button
-              class="btn btn-lg pull-xs-right btn-primary"
-              type="button"
-              ng-click="$ctrl.submit()"
-            >
-              Publish Article
-            </button>
-          </fieldset>
-        </form>
+        <ul v-if="hasError" class="error-messages">
+          <li v-for="message in messages" :key="message">{{ message }}</li>
+        </ul>
+        <ArticleForm />
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { Vue } from "vue-class-component";
+import { defineComponent, computed } from "vue";
+import { useStore } from "@/store";
+import ArticleForm from "@/components/article/ArticleForm.vue";
 
-export default class ArticleEditor extends Vue {}
+export default defineComponent({
+  name: "ArticleEditor",
+  components: { ArticleForm },
+  setup() {
+    const store = useStore();
+    store.commit("common/setDefaultState", { root: true });
+
+    const hasError = computed(() => store.state.common.hasError);
+    const messages = computed(() => store.state.common.messages);
+
+    return { hasError, messages };
+  },
+});
 </script>

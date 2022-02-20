@@ -6,7 +6,7 @@
     <ul class="pagination">
       <li
         v-for="pageNumber of totalPages"
-        :key="`pageNumber${pageNumber}`"
+        :key="`page-number${pageNumber}`"
         class="page-item"
         :class="{ active: pageNumber === page }"
       >
@@ -36,9 +36,6 @@ export default defineComponent({
       get: () => store.state.feed.feedParams.page,
       set: (value: number) => store.commit("feed/setFeedParamsPage", value),
     });
-    const tagId = computed(() => store.state.feed.feedParams.tagId);
-    const userId = computed(() => store.state.feed.feedParams.userId);
-
     const isListEmpty = computed(() => store.state.feed.articleList.length === 0);
 
     const totalPages = computed(() =>

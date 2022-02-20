@@ -18,3 +18,17 @@ export interface IFeedParams extends IPagination {
   tagId?: number;
   userId?: number;
 }
+
+export interface IComment {
+  body: string;
+  userId?: number;
+  feedId: number;
+}
+
+export interface ICreateArtile {
+  title: string;
+  description: string;
+  body: string;
+  userId: number;
+  tagList?: string[];
+}

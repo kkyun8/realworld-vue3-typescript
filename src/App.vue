@@ -18,7 +18,7 @@
           </template>
           <template v-else>
             <li class="nav-item">
-              <router-link class="nav-link" to="/editor"
+              <router-link class="nav-link" to="/editor/new"
                 ><i class="ion-compose"></i> New Article</router-link
               >
             </li>

@@ -1,6 +1,8 @@
 import { ActionTree } from "vuex";
 import axios from "@/lib/axios";
 import { IFeedState, RootState } from "@/types";
+import { ICreateArtile } from "@/types/feed";
+import router from "@/router";
 
 const actions: ActionTree<IFeedState, RootState> = {
   async getArticleList({ commit, state }: any, value: string): Promise<any> {
@@ -31,6 +33,24 @@ const actions: ActionTree<IFeedState, RootState> = {
 
     return result;
   },
+  async createArticle({ commit }: any, artile: ICreateArtile): Promise<any> {
+    commit("common/setLoading", true, { root: true });
+
+    const { title, body, description, userId, tagList } = artile;
+    const params = { title, body, description, userId, tagList };
+
+    const result = await axios
+      .post(`/feed`, params)
+      .then((res: any) => {
+        router.push({ name: "Home" });
+      })
+      .finally(() => {
+        commit("common/setLoading", false, { root: true });
+      });
+
+    return result;
+  },
+
   async updateComment({ commit, state, dispatch }: any, commentId: number): Promise<any> {
     commit("common/setLoading", true, { root: true });
     const { body, feedId } = state.comment;
