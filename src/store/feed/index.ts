@@ -7,7 +7,7 @@ const state: IFeedState = {
   article: { id: 0, title: "", body: "", description: "", userId: 0, favoriteCount: 0 },
   articleList: [],
   comment: { body: "", feedId: 0 },
-  feedParams: { tagId: 0, userId: 0, page: 1, limit: 5, totalCount: 0 },
+  feedParams: { tagId: 0, userId: 0, isFavorite: false, page: 1, limit: 5, totalCount: 0 },
 };
 
 export default {

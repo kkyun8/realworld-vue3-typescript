@@ -13,8 +13,8 @@ const actions: ActionTree<IFeedState, RootState> = {
       .then((res: any) => {
         commit("setArticleList", res.data.data);
 
-        const { limit, page, totalCount, userId, tagId } = res.data;
-        const values = { limit, page, totalCount, userId, tagId };
+        const { limit, page, totalCount, userId, tagId, isFavorite } = res.data;
+        const values = { limit, page, totalCount, userId, tagId, isFavorite };
         commit("setFeedParams", values);
       })
       .finally(() => commit("common/setLoading", false, { root: true }));

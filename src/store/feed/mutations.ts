@@ -19,6 +19,17 @@ const mutations: MutationTree<IFeedState> = {
   setComment(state: IFeedState, value: IComment): void {
     state.comment = value;
   },
+  setFeedParamsDefault(state: IFeedState): void {
+    const value: IFeedParams = {
+      tagId: 0,
+      userId: 0,
+      isFavorite: false,
+      page: 1,
+      limit: 5,
+      totalCount: 0,
+    };
+    state.feedParams = value;
+  },
   setFeedParamsPage(state: IFeedState, value: number): void {
     state.feedParams.page = value;
   },
@@ -27,6 +38,9 @@ const mutations: MutationTree<IFeedState> = {
   },
   setFeedParamsTagId(state: IFeedState, value: number): void {
     state.feedParams.tagId = value;
+  },
+  setFeedParamsIsFavorite(state: IFeedState, value: boolean): void {
+    state.feedParams.isFavorite = value;
   },
   setArticleInArticleList(state: IFeedState, value: IArticle): void {
     state.articleList = state.articleList.map((a) => {

@@ -3,10 +3,14 @@ import { IFeedState, RootState } from "@/types";
 
 const getters: GetterTree<IFeedState, RootState> = {
   feedType: (state: IFeedState): string => {
-    const { userId, tagId } = state.feedParams;
+    const { userId, tagId, isFavorite } = state.feedParams;
     let type = "global";
-    if (userId !== 0 || tagId !== 0) {
-      type = userId !== 0 ? "user" : "tag";
+    if (userId !== 0 || tagId !== 0 || isFavorite) {
+      if (isFavorite) {
+        type = "favorite";
+      } else {
+        type = userId !== 0 ? "user" : "tag";
+      }
     }
     return type;
   },
