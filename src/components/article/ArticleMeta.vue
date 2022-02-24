@@ -8,18 +8,22 @@
         "
     /></router-link>
     <div class="info">
-      <router-link to="/profile" class="author"> {{ createUser.name }} </router-link
-      ><span class="date"> {{ updatedAt }} </span>
-      <!-- TODO: Date type -> November 24, 2021 -->
+      <router-link :to="`/profile/${createUser.id}`" class="author">
+        {{ createUser.name }} </router-link
+      ><span class="date"> {{ new Date(updatedAt).toDateString() }} </span>
     </div>
-    <!-- TODO: hide heart button -->
     <template v-if="isArticlePage">
       <template v-if="isCreater">
-        <!--  TODO: isCreater EditArticle
-        TODO: isCreater DeleteArticle-->
+        <router-link :to="`/editor/${articleId}`" class="btn btn-outline-secondary btn-sm">
+          <i class="ion-edit"></i> Edit Article
+        </router-link>
+        <button class="btn btn-outline-danger btn-sm">
+          <i class="ion-trash-a"></i> Delete Article
+        </button>
       </template>
       <template v-else>
         <button
+          v-if="isLogin"
           class="btn btn-sm action-btn btn-outline-secondary"
           :class="[{ 'btn-secondary': isFollowing }, { 'btn-outline-secondary': !isFollowing }]"
           @click.prevent.stop="followOrUnFollow()"
@@ -29,6 +33,7 @@
           {{ createUser.name }}
         </button>
         <button
+          v-if="isLogin"
           class="btn btn-sm"
           :class="[
             { 'btn-primary': articleIsFavorited },
@@ -50,6 +55,7 @@
           { 'btn-outline-primary': !articleIsFavorited },
         ]"
         @click.prevent.stop.stop="favoriteOrUnFavorite()"
+        :disabled="!isLogin"
       >
         <i class="ion-heart"></i> {{ articleFavoriteCount }}
       </button>
@@ -82,7 +88,7 @@ export default defineComponent({
     },
     isFavorited: {
       type: Boolean,
-      required: true,
+      required: false,
     },
   },
   setup(props) {

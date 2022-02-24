@@ -1,6 +1,6 @@
 import { MutationTree } from "vuex";
 import { IUserState } from "@/types";
-import { ILogin, IRegister, IUser } from "@/types/user";
+import { ILogin, IRegister, IUser, IProfile } from "@/types/user";
 
 const mutations: MutationTree<IUserState> = {
   setRegister(state: IUserState, register: IRegister): void {
@@ -11,6 +11,9 @@ const mutations: MutationTree<IUserState> = {
   },
   setLoginUser(state: IUserState, loginUser: IUser): void {
     state.loginUser = loginUser;
+  },
+  setProfile(state: IUserState, profile: IProfile): void {
+    state.profile = profile;
   },
 };
 

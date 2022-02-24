@@ -1,4 +1,4 @@
-import { ILogin, IRegister, IUser } from "@/types/user";
+import { ILogin, IRegister, IUser, IProfile } from "@/types/user";
 import { IArticle, IFeedParams, IComment } from "./feed";
 import { ITag } from "./tag";
 
@@ -19,6 +19,7 @@ export interface IUserState {
   register: IRegister;
   login: ILogin;
   loginUser: IUser;
+  profile: IProfile;
 }
 
 export interface IFeedState {

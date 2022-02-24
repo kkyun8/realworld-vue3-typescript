@@ -19,3 +19,16 @@ export interface IUser {
   isFollower?: boolean;
   isFollowing?: boolean;
 }
+
+export interface IProfile extends IUser {
+  isLoginUser: boolean;
+}
+
+export interface IUserSettings {
+  email: string;
+  password: string;
+  name: string;
+  image: null | string;
+  title: null | string;
+  description: null | string;
+}

@@ -28,7 +28,7 @@
               >
             </li>
             <li class="nav-item">
-              <router-link class="nav-link" to="/profile">
+              <router-link class="nav-link" :to="`/profile/${userId}`">
                 <img
                   class="user-pic"
                   :src="userimage || 'https://api.realworld.io/images/smiley-cyrus.jpeg'"
@@ -67,7 +67,7 @@ export default defineComponent({
     const isLogin = computed(() => store.getters["user/isLogin"]);
     const username = computed(() => store.state.user.loginUser.name);
     const userimage = computed(() => store.state.user.loginUser.image);
-
+    const userId = computed(() => store.state.user.loginUser.id);
     if (!isLogin.value) {
       call();
     }
@@ -76,7 +76,7 @@ export default defineComponent({
       store.dispatch("user/logout");
     }
 
-    return { isLogin, username, userimage, logout };
+    return { isLogin, username, userimage, userId, logout };
   },
 });
 </script>

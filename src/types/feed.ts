@@ -17,6 +17,7 @@ export interface IArticle {
 export interface IFeedParams extends IPagination {
   tagId?: number;
   userId?: number;
+  isFavorite?: boolean;
 }
 
 export interface IComment {

@@ -48,10 +48,13 @@ export default defineComponent({
 
     const feedParamsTagName = computed(() => store.getters["feed/feedParamsTagName"]);
 
+    onMounted(async () => {
+      store.commit("feed/setFeedParamsDefault");
+      await store.dispatch("feed/getArticleList");
+    });
+
     async function setArticleType(type: string) {
-      store.commit("feed/setFeedParamsPage", 1);
-      store.commit("feed/setFeedParamsUserId", 0);
-      store.commit("feed/setFeedParamsTagId", 0);
+      store.commit("feed/setFeedParamsDefault");
       switch (type) {
         case "user":
           store.commit("feed/setFeedParamsUserId", store.state.user.loginUser.id);

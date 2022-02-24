@@ -97,6 +97,20 @@ const actions: ActionTree<IUserState, RootState> = {
     commit("common/setDefaultState", true, { root: true });
     router.push({ name: "Home" });
   },
+  async profile({ commit }: any, value: number): Promise<any> {
+    commit("common/setLoading", true, { root: true });
+
+    const result = await axios
+      .get(`/user/${value}`)
+      .then((res: any) => {
+        const result = res.data;
+        commit("setProfile", result);
+        commit("common/setDefaultState", true, { root: true });
+      })
+      .finally(() => commit("common/setLoading", false, { root: true }));
+
+    return result;
+  },
 };
 
 export default actions;

@@ -10,7 +10,7 @@
         class="page-item"
         :class="{ active: pageNumber === page }"
       >
-        <div class="page-link" @click.prevent="page = pageNumber">{{ pageNumber }}</div>
+        <div class="page-link" @click.prevent.stop="setPage(pageNumber)">{{ pageNumber }}</div>
       </li>
     </ul>
   </nav>
@@ -42,11 +42,11 @@ export default defineComponent({
       Math.ceil(store.state.feed.feedParams.totalCount / store.state.feed.feedParams.limit)
     );
 
-    watch(page, async () => {
-      await store.dispatch("feed/getArticleList");
-    });
+    function setPage(pageNumber: number) {
+      page.value = pageNumber;
+    }
 
-    onMounted(async () => {
+    watch(page, async () => {
       await store.dispatch("feed/getArticleList");
     });
 
@@ -56,6 +56,7 @@ export default defineComponent({
       articleList,
       page,
       totalPages,
+      setPage,
     };
   },
 });
