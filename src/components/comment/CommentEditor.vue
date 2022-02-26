@@ -3,7 +3,7 @@
     <ul v-if="hasError" class="error-messages">
       <li v-for="message in messages" :key="message">{{ message }}</li>
     </ul>
-    <form class="card comment-form ng-pristine ng-valid ng-submitted">
+    <form class="card comment-form">
       <div class="card-block">
         <textarea
           v-model="input.body"

@@ -21,6 +21,7 @@ const actions: ActionTree<IFeedState, RootState> = {
 
     return result;
   },
+
   async getArticle({ commit }: any, value: string): Promise<any> {
     commit("common/setLoading", true, { root: true });
 
@@ -33,6 +34,7 @@ const actions: ActionTree<IFeedState, RootState> = {
 
     return result;
   },
+
   async createArticle({ commit }: any, artile: ICreateArtile): Promise<any> {
     commit("common/setLoading", true, { root: true });
 
@@ -58,6 +60,23 @@ const actions: ActionTree<IFeedState, RootState> = {
 
     const result = await axios
       .put(`/comment/${commentId}`, params)
+      .then((res: any) => {
+        // TODO: return article?
+        const { id } = state.article;
+        dispatch("getArticle", id);
+      })
+      .finally(() => {
+        commit("setComment", "");
+        commit("common/setLoading", false, { root: true });
+      });
+
+    return result;
+  },
+  async deleteComment({ commit, state, dispatch }: any, commentId: number): Promise<any> {
+    commit("common/setLoading", true, { root: true });
+
+    const result = await axios
+      .delete(`/comment/${commentId}`)
       .then((res: any) => {
         // TODO: return article?
         const { id } = state.article;

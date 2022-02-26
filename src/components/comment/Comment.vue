@@ -19,14 +19,17 @@
       <router-link class="comment-author" :to="`/profile/${comment.user.id}`">
         {{ comment.user.name }}</router-link
       >
-      <span class="date-posted"> {{ comment.createAt }} </span>
-      <span class="mod-options" hidden=""><i class="ion-trash-a"></i></span>
+      <span class="date-posted"> {{ new Date(comment.createdAt).toDateString() }}</span>
+      <span v-if="comment.userId === loginUserId" class="mod-options" @click="deleteComment"
+        ><i class="ion-trash-a"></i
+      ></span>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import { useStore } from "@/store";
 
 export default defineComponent({
   name: "Comment",
@@ -35,6 +38,17 @@ export default defineComponent({
       type: Object,
       required: true,
     },
+  },
+  setup(props) {
+    const store = useStore();
+    const loginUserId = store.state.user.loginUser.id;
+
+    async function deleteComment() {
+      const { id } = props.comment;
+      await store.dispatch("feed/deleteComment", id);
+    }
+
+    return { deleteComment, loginUserId };
   },
 });
 </script>
