@@ -52,20 +52,24 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref } from "vue";
+import { defineComponent, reactive, ref, onMounted } from "vue";
+import { useRoute } from "vue-router";
 import { useStore } from "@/store";
-import { ICreateArtile } from "@/types/feed";
+import { IUpdateArtile } from "@/types/feed";
 
 export default defineComponent({
   name: "ArticleForm",
   setup() {
     const store = useStore();
+    const route = useRoute();
     const { loginUser } = store.state.user;
+    const id = route.params.id;
+    const isNew = id === "new";
 
     const tagList = ref<string[]>([]);
     const tag = ref("");
 
-    const input = reactive<ICreateArtile>({
+    const input = reactive<IUpdateArtile>({
       title: "",
       body: "",
       description: "",
@@ -83,16 +87,41 @@ export default defineComponent({
       tagList.value = tagList.value.filter((t) => t !== tag);
     }
 
+    onMounted(async () => {
+      if (isNew) return;
+
+      await store.dispatch("feed/getArticle", id);
+      const { title, body, description, tags } = store.state.feed.article;
+      input.title = title;
+      input.body = body;
+      input.description = description || "";
+
+      tagList.value = tags?.map((t) => t.name) || [];
+    });
+
     async function submit() {
       const { title, body, description, userId } = input;
 
-      await store.dispatch("feed/createArticle", {
-        title,
-        body,
-        description,
-        userId,
-        tagList: tagList.value,
-      });
+      if (isNew) {
+        await store.dispatch("feed/createArticle", {
+          title,
+          body,
+          description,
+          userId,
+          tagList: tagList.value,
+        });
+      } else {
+        await store.dispatch("feed/updateArticle", {
+          id,
+          article: {
+            title,
+            body,
+            description,
+            userId,
+            tagList: tagList.value,
+          },
+        });
+      }
     }
 
     return { input, submit, tagList, tag, addTag, deleteTag };

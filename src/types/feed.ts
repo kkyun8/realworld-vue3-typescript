@@ -26,7 +26,7 @@ export interface IComment {
   feedId: number;
 }
 
-export interface ICreateArtile {
+export interface IUpdateArtile {
   title: string;
   description: string;
   body: string;
