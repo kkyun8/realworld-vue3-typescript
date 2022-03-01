@@ -2,6 +2,7 @@ import { ActionTree } from "vuex";
 import axios from "@/lib/axios";
 import router from "@/router";
 import { IUserState, RootState } from "@/types";
+import { IUserSettings } from "@/types/user";
 
 const loginSetup = (data: any) => {
   const { id, name, image } = data;
@@ -106,6 +107,97 @@ const actions: ActionTree<IUserState, RootState> = {
         const result = res.data;
         commit("setProfile", result);
         commit("common/setDefaultState", true, { root: true });
+      })
+      .finally(() => commit("common/setLoading", false, { root: true }));
+
+    return result;
+  },
+  async updateSetting({ commit }: any, params: IUserSettings): Promise<any> {
+    commit("common/setLoading", true, { root: true });
+
+    const result = await axios
+      .put(`/user`, params)
+      .then((res: any) => {
+        const loginUser = loginSetup(res.data.user);
+        commit("setLoginUser", loginUser);
+        router.push({ name: "Home" });
+        commit("common/setDefaultState", true, { root: true });
+      })
+      .finally(() => commit("common/setLoading", false, { root: true }));
+
+    return result;
+  },
+  async follow({ commit }: any, articleUserId: number): Promise<any> {
+    commit("common/setLoading", true, { root: true });
+
+    const result = await axios
+      .post(`/user/follow/${articleUserId}`)
+      .then((res: any) => {
+        const followUser = res.data;
+        commit("feed/setArticleUser", followUser, { root: true });
+      })
+      .finally(() => commit("common/setLoading", false, { root: true }));
+
+    return result;
+  },
+
+  async unFollow({ commit, state }: any, articleUserId: number): Promise<any> {
+    commit("common/setLoading", true, { root: true });
+
+    const result = await axios
+      .delete(`/user/follow/${articleUserId}`)
+      .then((res: any) => {
+        const followUser = res.data;
+        commit("feed/setArticleUser", followUser, { root: true });
+      })
+      .finally(() => commit("common/setLoading", false, { root: true }));
+
+    return result;
+  },
+
+  async favoriteFeed(
+    { commit, state }: any,
+    value: { articleId: number; isArticlePage: boolean }
+  ): Promise<any> {
+    // TODO: loading type set
+    // commit("common/setLoading", true, { root: true });
+
+    const { articleId, isArticlePage } = value;
+
+    const result = await axios
+      .post(`/feed/${articleId}/favorite`)
+      .then((res: any) => {
+        const feed = res.data;
+
+        if (isArticlePage) {
+          commit("feed/setArticle", feed, { root: true });
+        } else {
+          commit("feed/setArticleInArticleList", feed, { root: true });
+        }
+      })
+      .finally(() => commit("common/setLoading", false, { root: true }));
+
+    return result;
+  },
+  async unFavoriteFeed(
+    { commit, state }: any,
+    value: { articleId: number; isArticlePage: boolean }
+  ): Promise<any> {
+    // TODO: loading type set
+    // commit("common/setLoading", true, { root: true });
+
+    const { articleId, isArticlePage } = value;
+
+    const result = await axios
+      .delete(`/feed/${articleId}/favorite`)
+      .then((res: any) => {
+        const feed = res.data;
+
+        if (isArticlePage) {
+          commit("feed/setArticle", feed, { root: true });
+        } else {
+          commit("feed/setArticleInArticleList", feed, { root: true });
+        }
       })
       .finally(() => commit("common/setLoading", false, { root: true }));
 
