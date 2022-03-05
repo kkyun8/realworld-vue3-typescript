@@ -58,6 +58,7 @@
 import { defineComponent, onMounted, reactive, ref } from "vue";
 import { useStore } from "@/store";
 import { IUserSettings } from "@/types/user";
+import modal from "@/components/common/modal";
 
 export default defineComponent({
   name: "SettingsForm",
@@ -85,6 +86,14 @@ export default defineComponent({
     });
 
     async function submit() {
+      const isConfrim = await modal("UserSetting", "Are you sure you want to change it?", true)
+        .then(() => true)
+        .catch(() => false);
+
+      if (!isConfrim) {
+        return;
+      }
+
       const { email, password, name, image, title, description } = input;
       await store.dispatch("user/updateSetting", {
         email,

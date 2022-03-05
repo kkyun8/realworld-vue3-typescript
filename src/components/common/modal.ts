@@ -50,7 +50,7 @@ const modalElement = (
   modalDialog.className = "modal-dialog";
 
   const modalContent = document.createElement("div");
-  modalDialog.className = "modal-content";
+  modalContent.className = "modal-content";
 
   const modalHeader = document.createElement("div");
   modalHeader.className = "modal-header";
