@@ -1,5 +1,6 @@
 import { MutationTree } from "vuex";
 import { ICommonState } from "@/types";
+import loading from "@/components/common/loading";
 
 const mutations: MutationTree<ICommonState> = {
   setDefaultState(state: ICommonState): void {
@@ -8,6 +9,7 @@ const mutations: MutationTree<ICommonState> = {
   },
   setLoading(state: ICommonState, value: boolean): void {
     state.isLoading = value;
+    loading(value);
   },
   setHasError(state: ICommonState, value: boolean): void {
     state.hasError = value;
