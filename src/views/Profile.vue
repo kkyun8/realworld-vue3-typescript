@@ -5,7 +5,8 @@
         <div class="row">
           <div class="col-xs-12 col-md-10 offset-md-1">
             <img
-              alt="author image"
+              class="user-img"
+              alt="profile image"
               :src="
                 profile?.image ? profile.image : 'https://api.realworld.io/images/smiley-cyrus.jpeg'
               "
@@ -21,13 +22,13 @@
               <i class="ion-plus-round"></i> {{ isFollowing ? "UnFollow" : "Follow" }}
               {{ profile?.name }}
             </button>
-            <button
+            <router-link
               v-if="isLoginUser"
               class="btn btn-sm btn-outline-secondary action-btn"
-              href="/settings"
+              to="/settings"
             >
               <i class="ion-gear-a"></i> Edit Profile Settings
-            </button>
+            </router-link>
           </div>
         </div>
       </div>

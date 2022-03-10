@@ -14,9 +14,9 @@
             ><button class="btn btn-sm action-btn btn-outline-secondary">
               <i class="ion-plus-round"></i> &nbsp; Follow Gerome
             </button></app-follow-button
-          ><a class="btn btn-sm btn-outline-secondary action-btn" hidden="" href="/settings"
+          ><router-link class="btn btn-sm btn-outline-secondary action-btn" to="/settings"
             ><i class="ion-gear-a"></i> Edit Profile Settings
-          </a>
+          </router-link>
         </div>
       </div>
     </div>
