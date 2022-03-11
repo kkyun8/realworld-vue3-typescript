@@ -17,7 +17,7 @@
         <router-link :to="`/editor/${articleId}`" class="btn btn-outline-secondary btn-sm">
           <i class="ion-edit"></i> Edit Article
         </router-link>
-        <button class="btn btn-outline-danger btn-sm">
+        <button class="btn btn-outline-danger btn-sm" @click.prevent.stop="deleteArticle()">
           <i class="ion-trash-a"></i> Delete Article
         </button>
       </template>
@@ -126,6 +126,10 @@ export default defineComponent({
       }
     }
 
+    async function deleteArticle() {
+      await store.dispatch("feed/deleteArticle", props.articleId);
+    }
+
     return {
       isLogin,
       isArticlePage,
@@ -137,6 +141,7 @@ export default defineComponent({
       articleIsFavorited,
       followOrUnFollow,
       favoriteOrUnFavorite,
+      deleteArticle,
     };
   },
 });

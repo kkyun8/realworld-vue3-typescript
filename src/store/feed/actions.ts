@@ -74,6 +74,21 @@ const actions: ActionTree<IFeedState, RootState> = {
     return result;
   },
 
+  async deleteArticle({ commit }: any, articleId: number): Promise<any> {
+    commit("common/setLoading", true, { root: true });
+
+    const result = await axios
+      .delete(`/feed/${articleId}`)
+      .then((res: any) => {
+        router.push({ name: "Home" });
+      })
+      .finally(() => {
+        commit("common/setLoading", false, { root: true });
+      });
+
+    return result;
+  },
+
   async updateComment({ commit, state, dispatch }: any, commentId: number): Promise<any> {
     commit("common/setLoading", true, { root: true });
     const { body, feedId } = state.comment;
@@ -82,7 +97,6 @@ const actions: ActionTree<IFeedState, RootState> = {
     const result = await axios
       .put(`/comment/${commentId}`, params)
       .then((res: any) => {
-        // TODO: return article?
         const { id } = state.article;
         dispatch("getArticle", id);
       })
