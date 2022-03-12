@@ -17,7 +17,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, watch, onMounted } from "vue";
+import { defineComponent, computed } from "vue";
 import { useStore } from "@/store";
 import ArticlePreview from "@/components/article/ArticlePreview.vue";
 
@@ -42,13 +42,10 @@ export default defineComponent({
       Math.ceil(store.state.feed.feedParams.totalCount / store.state.feed.feedParams.limit)
     );
 
-    function setPage(pageNumber: number) {
+    async function setPage(pageNumber: number) {
       page.value = pageNumber;
-    }
-
-    watch(page, async () => {
       await store.dispatch("feed/getArticleList");
-    });
+    }
 
     return {
       isLoading,

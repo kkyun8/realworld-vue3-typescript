@@ -28,13 +28,7 @@
               >
             </li>
             <li class="nav-item">
-              <router-link class="nav-link" :to="`/profile/${userId}`">
-                <img
-                  class="user-pic"
-                  :src="userimage || 'https://api.realworld.io/images/smiley-cyrus.jpeg'"
-                />
-                {{ username }}</router-link
-              >
+              <router-link class="nav-link" :to="`/profile/${userId}`"> {{ username }}</router-link>
             </li>
           </template>
         </ul>

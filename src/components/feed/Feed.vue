@@ -5,7 +5,7 @@
         <div
           class="nav-link"
           :class="{ active: feedType === 'user' }"
-          @click.prevent="setArticleType('user')"
+          @click.prevent.stop="setArticleType('user')"
         >
           Your Feed
         </div>
@@ -15,7 +15,7 @@
         <div
           class="nav-link"
           :class="{ active: feedType === 'global' }"
-          @click.prevent="setArticleType('global')"
+          @click.prevent.stop="setArticleType('global')"
         >
           Global Feed
         </div>
@@ -31,8 +31,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, ref, onMounted } from "vue";
+import { defineComponent, computed, onMounted } from "vue";
 import { useStore } from "@/store";
+import { useRoute } from "vue-router";
 import ArticleList from "@/components/article/ArticleList.vue";
 
 export default defineComponent({
@@ -42,6 +43,8 @@ export default defineComponent({
   name: "Feed",
   setup() {
     const store = useStore();
+    const route = useRoute();
+
     const isLogin = computed(() => store.getters["user/isLogin"]);
     const hasTag = computed(() => store.state.feed.feedParams.tagId !== 0);
     const feedType = computed(() => store.getters["feed/feedType"]);
@@ -49,7 +52,14 @@ export default defineComponent({
     const feedParamsTagName = computed(() => store.getters["feed/feedParamsTagName"]);
 
     onMounted(async () => {
+      const { params } = route;
+      const { tagId } = params;
+
       store.commit("feed/setFeedParamsDefault");
+      if (tagId) {
+        store.commit("feed/setFeedParamsTagId", Number(tagId));
+      }
+
       await store.dispatch("feed/getArticleList");
     });
 

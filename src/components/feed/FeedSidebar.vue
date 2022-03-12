@@ -8,7 +8,7 @@
         v-for="tag in tagList"
         :key="`sidebar-tag${tag.id}`"
         class="tag-default tag-pill"
-        @click.prevent="callArticleList(tag.id)"
+        @click.prevent.stop="callArticleList(tag.id)"
       >
         {{ tag.name }}
       </a>
