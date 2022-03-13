@@ -1,9 +1,7 @@
 <template>
   <div class="card">
     <div class="card-block">
-      <p class="card-text">
-        {{ comment.body }}
-      </p>
+      <pre class="card-text">{{ comment.body }}</pre>
     </div>
     <div class="card-footer">
       <router-link class="comment-author" :to="`/profile/${comment.user.id}`">
@@ -20,9 +18,9 @@
         {{ comment.user.name }}</router-link
       >
       <span class="date-posted"> {{ new Date(comment.createdAt).toDateString() }}</span>
-      <span v-if="comment.userId === loginUserId" class="mod-options" @click="deleteComment"
-        ><i class="ion-trash-a"></i
-      ></span>
+      <span v-if="comment.userId === loginUserId" class="mod-options">
+        <i @click="deleteComment" class="ion-trash-a" />
+      </span>
     </div>
   </div>
 </template>
@@ -30,6 +28,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { useStore } from "@/store";
+import modal from "@/components/common/modal";
 
 export default defineComponent({
   name: "Comment",
@@ -44,6 +43,17 @@ export default defineComponent({
     const loginUserId = store.state.user.loginUser.id;
 
     async function deleteComment() {
+      const isConfrim = await modal(
+        "CommentDelete",
+        "Are you sure you want to delete the comment?",
+        true
+      )
+        .then(() => true)
+        .catch(() => false);
+
+      if (!isConfrim) {
+        return;
+      }
       const { id } = props.comment;
       await store.dispatch("feed/deleteComment", id);
     }
