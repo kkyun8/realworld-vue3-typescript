@@ -1,13 +1,25 @@
-export default async (title: string, body: string, isConfrim = false) => {
+export default async (
+  title: string,
+  body: string,
+  isConfrim = false,
+  hasTextarea = false,
+  textareaValue = ""
+): Promise<string> => {
   return new Promise<string>((resolve, reject) => {
-    modalElement(resolve, reject, { title, body, isConfrim });
+    modalElement(resolve, reject, { title, body, isConfrim, hasTextarea, textareaValue });
   });
 };
 
 const modalElement = (
   resolve: (value: string | PromiseLike<string>) => void,
   reject: (value: string | PromiseLike<string>) => void,
-  setting: { title: string; body: string; isConfrim: boolean }
+  setting: {
+    title: string;
+    body: string;
+    isConfrim: boolean;
+    hasTextarea: boolean;
+    textareaValue: string;
+  }
 ) => {
   const modalOpen = document.createElement("div");
   modalOpen.className = "modal-open";
@@ -34,7 +46,20 @@ const modalElement = (
   okButton.className = "btn btn-primary";
   okButton.textContent = "OK";
   okButton.addEventListener("click", () => {
-    resolve("close");
+    let resolveMsg = "close";
+    if (setting.hasTextarea) {
+      const modalTextarea: HTMLInputElement = <HTMLInputElement>(
+        document.getElementById("modal-textarea")
+      );
+      if (!modalTextarea?.value) {
+        const errMsg = document.createElement("li");
+        errMsg.textContent = "text err";
+        document.getElementById("modal-textarea-error")?.appendChild(errMsg);
+        return;
+      }
+      resolveMsg = modalTextarea?.value || "";
+    }
+    resolve(resolveMsg);
     closeModal();
   });
 
@@ -60,6 +85,20 @@ const modalElement = (
   const modalBody = document.createElement("div");
   modalBody.className = "modal-body";
   modalBody.textContent = setting.body;
+  if (setting.hasTextarea) {
+    const error = document.createElement("ul");
+    error.className = "error-messages";
+    error.id = "modal-textarea-error";
+    modalBody.appendChild(error);
+
+    const textarea = document.createElement("textarea");
+    textarea.className = "form-control form-control-lg";
+    textarea.rows = 8;
+    textarea.id = "modal-textarea";
+    const { textareaValue } = setting;
+    textarea.value = textareaValue;
+    modalBody.appendChild(textarea);
+  }
 
   const modalFooter = document.createElement("div");
   modalFooter.className = "modal-footer";

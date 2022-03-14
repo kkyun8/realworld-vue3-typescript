@@ -18,7 +18,9 @@
         {{ comment.user.name }}</router-link
       >
       <span class="date-posted"> {{ new Date(comment.createdAt).toDateString() }}</span>
-      <span v-if="comment.userId === loginUserId" class="mod-options">
+
+      <span v-if="comment.userId === loginUserId" class="mod-options"
+        ><i @click="updateComment" class="ion-paintbrush" />
         <i @click="deleteComment" class="ion-trash-a" />
       </span>
     </div>
@@ -58,7 +60,22 @@ export default defineComponent({
       await store.dispatch("feed/deleteComment", id);
     }
 
-    return { deleteComment, loginUserId };
+    async function updateComment() {
+      const { id, feedId } = props.comment;
+      const old = props.comment.body;
+      const body = await modal("CommentDelete", "Please write a comment.", true, true, old).catch(
+        () => ""
+      );
+
+      if (!body) {
+        return;
+      }
+
+      store.commit("feed/setComment", { body, feedId });
+      await store.dispatch("feed/updateComment", id);
+    }
+
+    return { updateComment, deleteComment, loginUserId };
   },
 });
 </script>
