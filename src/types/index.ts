@@ -13,6 +13,7 @@ export interface ICommonState {
   isLoading: boolean;
   hasError: boolean;
   messages: string[];
+  t?: any;
 }
 
 export interface IUserState {

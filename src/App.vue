@@ -4,6 +4,13 @@
       <div class="container">
         <router-link class="navbar-brand" to="/">conduit</router-link>
         <ul class="nav navbar-nav pull-xs-right">
+          <li class="nav-item">
+            <select v-model="locale" class="form-control-sm nav-link">
+              <option value="en">EN</option>
+              <option value="ja">JP</option>
+              <option value="kr">KR</option>
+            </select>
+          </li>
           <li v-if="isLogin" class="nav-item">
             <a @click.prevent="logout" class="nav-link">Logout</a>
           </li>
@@ -49,10 +56,14 @@
 <script lang="ts">
 import { defineComponent, computed } from "vue";
 import { useStore } from "@/store";
+import { useI18n } from "vue-i18n";
 
 export default defineComponent({
   setup() {
+    const { t, locale } = useI18n();
+
     const store = useStore();
+    store.commit("common/setI18n", t);
 
     const call = async () => {
       await store.dispatch("user/token");
@@ -70,7 +81,7 @@ export default defineComponent({
       store.dispatch("user/logout");
     }
 
-    return { isLogin, username, userimage, userId, logout };
+    return { locale, isLogin, username, userimage, userId, logout };
   },
 });
 </script>

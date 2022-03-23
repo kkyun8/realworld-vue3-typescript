@@ -17,6 +17,9 @@ const mutations: MutationTree<ICommonState> = {
   setMessages(state: ICommonState, value: string[]): void {
     state.messages = value;
   },
+  setI18n(state: ICommonState, value: any): void {
+    state.t = value;
+  },
 };
 
 export default mutations;
