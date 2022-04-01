@@ -2,7 +2,6 @@ import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import Home from "../views/Home.vue";
 import { store } from "@/store";
 
-// TODO: url param & etc
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
@@ -40,12 +39,12 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/editor/:id",
     name: "Editor",
-    component: () => import(/* webpackChunkName: "register" */ "../views/ArticleEditor.vue"),
+    component: () => import(/* webpackChunkName: "articleEditor" */ "../views/ArticleEditor.vue"),
   },
   {
     path: "/settings",
     name: "Settings",
-    component: () => import(/* webpackChunkName: "register" */ "../views/UserSettings.vue"),
+    component: () => import(/* webpackChunkName: "userSettings" */ "../views/UserSettings.vue"),
   },
 ];
 

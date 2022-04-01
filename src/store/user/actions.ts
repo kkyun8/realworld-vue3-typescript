@@ -68,7 +68,7 @@ const actions: ActionTree<IUserState, RootState> = {
     if (token) {
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     } else {
-      return;
+      return commit("common/setLoading", false, { root: true });
     }
 
     const result = await axios
